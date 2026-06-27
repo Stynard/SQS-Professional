@@ -5,8 +5,9 @@
 // Module  : Trend Engine
 //====================================================
 
+// Version : 1.0.1 Release
 
-indicator("SQS Professional v1.0.1 Beta", overlay=true)
+indicator("SQS Professional Trend Engine v1.0.1", overlay=true)
 
 //====================================================
 // INPUTS
@@ -105,6 +106,13 @@ healthScore = calcHealthScore()
 trendScore = structureScore + healthScore
 
 //====================================================
+// TREND INTEGRITY
+//====================================================
+
+integrity = close > sma50 and sma50 > sma200 and sma200 > sma200[20] ? "INTACT" : close > sma200 and sma50 > sma200 ? "PULLBACK" : "BROKEN"
+
+
+//====================================================
 // LETTER GRADE
 //====================================================
 
@@ -135,13 +143,12 @@ headerColor =
 // DASHBOARD
 //====================================================
 
-var table dash = table.new(position.top_right, 2, 10, frame_width=1)
+var table dash = table.new(position.top_right, 2, 11, frame_width=1)
 
 if barstate.islast
 
-    table.cell(dash, 0, 0, "SQS Professional", bgcolor=headerColor, text_color=color.white)
-    table.cell(dash, 1, 0, "v1.0.1 Beta", bgcolor=headerColor, text_color=color.white)
-
+    table.cell(dash, 0, 0, "SQS™", bgcolor=headerColor, text_color=color.white)
+    table.cell(dash, 1, 0, "Professional", bgcolor=headerColor, text_color=color.white)
     table.cell(dash, 0, 1, "Grade")
     table.cell(dash, 1, 1, grade)
 
@@ -158,16 +165,13 @@ if barstate.islast
     table.cell(dash, 1, 5, str.tostring(healthScore) + "/30")
 
     table.cell(dash, 0, 6, "Relative Strength")
-    table.cell(dash, 1, 6, "--")
-
+    
     table.cell(dash, 0, 7, "Momentum")
-    table.cell(dash, 1, 7, "--")
-
+    
     table.cell(dash, 0, 8, "Institutional")
-    table.cell(dash, 1, 8, "--")
-
-    table.cell(dash, 0, 9, "Version")
-    table.cell(dash, 1, 9, "1.0.1 Beta")
-
+    
     table.cell(dash, 0, 10, "Status")
     table.cell(dash, 1, 10, rating)
+
+    table.cell(dash, 0, 9, "Integrity")
+    table.cell(dash, 1, 9, integrity)
